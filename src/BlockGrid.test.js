@@ -40,7 +40,7 @@ describe('BlockGrid', () => {
     });
   });
 
-  it('finds all neighbouring same coloured blocks', () => {
+  it('finds neighbouring same coloured blocks', () => {
     const RED = 0.2;
     const GREEN = 0.4;
     const BLUE = 0.6;
@@ -66,7 +66,7 @@ describe('BlockGrid', () => {
     const sameColouredNeighbours = blockGrid.getSameColouredNeighbours(block);
 
     console.log(sameColouredNeighbours);
-    expect(sameColouredNeighbours).toEqual([{ x: 3, y: 1, colour: 'blue' }, { x: 2, y: 1, colour: 'blue' }, { x: 4, y: 1, colour: 'blue' } ]);
+    expect(sameColouredNeighbours).toEqual([{ x: 2, y: 1, colour: 'blue' }, { x: 4, y: 1, colour: 'blue' } ]);
 
     jest.clearAllMocks();
   });

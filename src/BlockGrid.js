@@ -1,7 +1,8 @@
 import Block from './Block';
+import { find } from 'lodash';
 
 class BlockGrid {
-  constructor(width = 10, height = 10) {
+  constructor(width = 5, height = 5) {
     this.width = width;
     this.height = height;
     this.grid = [];
@@ -26,21 +27,14 @@ class BlockGrid {
     return this.grid[x];
   }
 
-  getSameColouredNeighbours(block, sameColouredNeighbours = [block]) {
-    console.log(block);
+  getSameColouredNeighbours(block) {
+    const sameColouredNeighbours = [];
 
     if (block) {
       const above = block.y >= this.height - 1 ? undefined : this.getBlock(block.x, block.y + 1); 
-      // console.log('Above ', above);
-
       const below = block.y > 0 ? this.getBlock(block.x, block.y - 1) : undefined;
-      // console.log('Below', below);
-
       const left = block.x > 0 ? this.getBlock(block.x - 1, block.y) : undefined;
-      // console.log('Left', left);
-
       const right = block.x >= this.width - 1 ? undefined : this.getBlock(block.x + 1, block.y); 
-      // console.log('Right', right);
 
       [above, below, left, right].forEach(neighbour => {
         if (neighbour && block.colour === neighbour.colour) {
@@ -81,7 +75,6 @@ class BlockGrid {
       const nonGreys = columnColours.filter(colour => colour !== 'grey');
       const greys = columnColours.filter(colour => colour === 'grey');
       const newColumnColours =  nonGreys.concat(greys);
-      console.log(newColumnColours);
 
       for(let y = 0; y < this.height; y++) {
         const block = this.getBlock(x,y);
@@ -94,9 +87,22 @@ class BlockGrid {
   blockClicked(e, clickedBlock) {
     console.log(e, clickedBlock);
     const sameColouredNeighbours = this.getSameColouredNeighbours(clickedBlock);
-    sameColouredNeighbours.forEach(neighbour => {
+
+    for(let i = 0; i < sameColouredNeighbours.length; i++) {
+      console.log(JSON.stringify(sameColouredNeighbours));
+      const neighbour = sameColouredNeighbours[i];
+      const moreSameColouredNeighbours = this.getSameColouredNeighbours(neighbour);
+      moreSameColouredNeighbours.forEach(neighboursNeighbour => {
+        if (find(sameColouredNeighbours, neighboursNeighbour) === undefined) {
+          sameColouredNeighbours.push(neighboursNeighbour);
+        }
+      });
+    }
+
+    [clickedBlock].concat(sameColouredNeighbours).forEach(neighbour => {
       neighbour.colour = 'grey';
     });
+
     this.updateColumns();
   }
 }
