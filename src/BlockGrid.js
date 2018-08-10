@@ -16,6 +16,14 @@ class BlockGrid {
     }
   }
 
+  getBlock(x, y) {
+    return this.grid[x][y];
+  }
+
+  getColumn(x, y) {
+    return this.grid[x];
+  }
+
   render(el = document.getElementById('gridEl')) {
     for (let x = 0; x < this.width; x++) {
       const id = 'col_' + x;
