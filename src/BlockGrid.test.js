@@ -24,14 +24,14 @@ describe('BlockGrid', () => {
     });
   });
 
-  it('gets a block given x and y', () => {
+  it('getBlock gets a block given x and y', () => {
     const blockGrid = new BlockGrid(10, 10);
     const block = blockGrid.getBlock(5,2);
     expect(block.x).toBe(5);
     expect(block.y).toBe(2);
   });
 
-  it('gets a column given x', () => {
+  it('getColumn gets a column given x', () => {
     const blockGrid = new BlockGrid(10, 10);
     const column = blockGrid.getColumn(5);
     expect(column.length).toBe(10);
@@ -40,7 +40,7 @@ describe('BlockGrid', () => {
     });
   });
 
-  it('finds neighbouring same coloured blocks', () => {
+  describe('context: mocked randomness of colours for testability', () => {
     const RED = 0.2;
     const GREEN = 0.4;
     const BLUE = 0.6;
@@ -62,12 +62,41 @@ describe('BlockGrid', () => {
     global.Math = mockMath;
 
     const blockGrid = new BlockGrid(5, 5); 
-    const block = blockGrid.getBlock(3,1);
-    const sameColouredNeighbours = blockGrid.getSameColouredNeighbours(block);
 
-    console.log(sameColouredNeighbours);
-    expect(sameColouredNeighbours).toEqual([{ x: 2, y: 1, colour: 'blue' }, { x: 4, y: 1, colour: 'blue' } ]);
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
 
-    jest.clearAllMocks();
+    describe('getSameColouredNeighbours finds neighbouring same coloured blocks', () => {
+      it('for an inner block', () => {
+        const block = blockGrid.getBlock(3,1);
+        const sameColouredNeighbours = blockGrid.getSameColouredNeighbours(block);
+        expect(sameColouredNeighbours).toEqual([{ x: 2, y: 1, colour: 'blue' }, { x: 4, y: 1, colour: 'blue' } ]);
+      });
+
+      it('for a block in the leftmost column', () => {
+        const block = blockGrid.getBlock(0,2);
+        const sameColouredNeighbours = blockGrid.getSameColouredNeighbours(block);
+        expect(sameColouredNeighbours).toEqual([{ x: 0, y: 3, colour: 'green' }]);
+      });
+
+      it('for a block in the rightmost column', () => {
+        const block = blockGrid.getBlock(4,2);
+        const sameColouredNeighbours = blockGrid.getSameColouredNeighbours(block);
+        expect(sameColouredNeighbours).toEqual([{ x: 4, y: 1, colour: 'blue' }]);
+      });
+
+      it('for a block in the topmost row', () => {
+        const block = blockGrid.getBlock(1,4);
+        const sameColouredNeighbours = blockGrid.getSameColouredNeighbours(block);
+        expect(sameColouredNeighbours).toEqual([{ x: 1, y: 3, colour: 'green' }]);
+      });
+
+      it('for a block in the bottommost row', () => {
+        const block = blockGrid.getBlock(4,0);
+        const sameColouredNeighbours = blockGrid.getSameColouredNeighbours(block);
+        expect(sameColouredNeighbours).toEqual([{ x: 4, y: 1, colour: 'blue' }]);
+      });
+    });
   });
 });
