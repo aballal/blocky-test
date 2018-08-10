@@ -46,9 +46,9 @@ class BlockGrid {
   }
 
   getAllConnectedSameColouredBlocks(block) {
-    const sameColouredNeighbours = this.getSameColouredNeighbours(block);
+    const sameColouredNeighbours = [block].concat(this.getSameColouredNeighbours(block));
 
-    for(let i = 0; i < sameColouredNeighbours.length; i++) {
+    for(let i = 1; i < sameColouredNeighbours.length; i++) {
       const neighbour = sameColouredNeighbours[i];
       const moreSameColouredNeighbours = this.getSameColouredNeighbours(neighbour);
       moreSameColouredNeighbours.forEach(neighboursNeighbour => {
@@ -60,6 +60,7 @@ class BlockGrid {
 
     return sameColouredNeighbours;
   }
+
   render(el = document.getElementById('gridEl')) {
     for (let x = 0; x < this.width; x++) {
       const id = 'col_' + x;
@@ -82,7 +83,20 @@ class BlockGrid {
     }
   }
 
-  updateColumns() {
+  renderUpdates() {
+    for(let x = 0; x < this.width; x++) {
+      for(let y = 0; y < this.height; y++) {
+        const block = this.getBlock(x,y);
+        document.getElementById(`block_${block.x}x${block.y}`).style.background = block.colour;
+      }
+    }
+  }
+
+  tumbleBlocks(clickedBlock) {
+    const allConnectedSameColouredBlocks = this.getAllConnectedSameColouredBlocks(clickedBlock);
+    allConnectedSameColouredBlocks.forEach(block => {
+      block.colour = 'grey';
+    });
     for(let x = 0; x < this.width; x++) {
       const column = this.getColumn(x);
       const columnColours = column.map(block => block.getColour());
@@ -94,19 +108,14 @@ class BlockGrid {
       for(let y = 0; y < this.height; y++) {
         const block = this.getBlock(x,y);
         block.colour = newColumnColours[y];
-        document.getElementById(`block_${block.x}x${block.y}`).style.background = newColumnColours[y];
       }
     }
   }
 
   blockClicked(e, clickedBlock) {
     console.log(e, clickedBlock);
-    const allConnectedSameColouredBlocks = this.getAllConnectedSameColouredBlocks(clickedBlock);
-    allConnectedSameColouredBlocks.forEach(block => {
-      block.colour = 'grey';
-    });
-
-    this.updateColumns();
+    this.tumbleBlocks(clickedBlock);
+    this.renderUpdates();
   }
 }
 

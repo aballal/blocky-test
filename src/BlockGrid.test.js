@@ -104,12 +104,56 @@ describe('BlockGrid', () => {
         const block = blockGrid.getBlock(2,2);
         const allConnectedSameColouredBlocks = blockGrid.getAllConnectedSameColouredBlocks(block);
         expect(allConnectedSameColouredBlocks).toEqual([
-          { x: 2, y: 1, colour: 'blue' },
           { x: 2, y: 2, colour: 'blue' },
+          { x: 2, y: 1, colour: 'blue' },
           { x: 3, y: 1, colour: 'blue' },
           { x: 4, y: 1, colour: 'blue' },
           { x: 4, y: 2, colour: 'blue' },
           { x: 4, y: 0, colour: 'blue' }, 
+        ]);
+      });
+    });
+
+    describe('tumbleBlocks', () => {
+      it('tumbles off all connected blocks of the same colour as clicked', () => {
+        const block = blockGrid.getBlock(2,2);
+        blockGrid.tumbleBlocks(block);
+        expect(blockGrid.grid).toEqual([ 
+          [ 
+            { x: 0, y: 0, colour: 'green' },
+            { x: 0, y: 1, colour: 'yellow' },
+            { x: 0, y: 2, colour: 'green' },
+            { x: 0, y: 3, colour: 'green' },
+            { x: 0, y: 4, colour: 'blue' } 
+          ],
+          [ 
+            { x: 1, y: 0, colour: 'yellow' },
+            { x: 1, y: 1, colour: 'yellow' },
+            { x: 1, y: 2, colour: 'red' },
+            { x: 1, y: 3, colour: 'green' },
+            { x: 1, y: 4, colour: 'green' } 
+          ],
+          [ 
+            { x: 2, y: 0, colour: 'red' },
+            { x: 2, y: 1, colour: 'green' },
+            { x: 2, y: 2, colour: 'yellow' },
+            { x: 2, y: 3, colour: 'grey' },
+            { x: 2, y: 4, colour: 'grey' } 
+          ],
+          [ 
+            { x: 3, y: 0, colour: 'red' },
+            { x: 3, y: 1, colour: 'green' },
+            { x: 3, y: 2, colour: 'yellow' },
+            { x: 3, y: 3, colour: 'red' },
+            { x: 3, y: 4, colour: 'grey' } 
+          ],
+          [ 
+            { x: 4, y: 0, colour: 'red' },
+            { x: 4, y: 1, colour: 'green' },
+            { x: 4, y: 2, colour: 'grey' },
+            { x: 4, y: 3, colour: 'grey' },
+            { x: 4, y: 4, colour: 'grey' } 
+          ] 
         ]);
       });
     });
