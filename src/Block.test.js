@@ -8,7 +8,7 @@ describe('Block', () => {
       const block = new Block(...testCoord);
       expect(block.x).toBe(testCoord[0]);
       expect(block.y).toBe(testCoord[1]);
-      expect(COLOURS).toContain(block.colour);
+      expect(COLOURS).toContain(block.getColour());
     });
   });
 });

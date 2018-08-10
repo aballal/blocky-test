@@ -33,3 +33,7 @@ After clicking one of the bottom right blue boxes, it should look like this:
 [nvm]: https://github.com/creationix/nvm 'Because nobody wants to upgrade and downgrade Node per project'
 [yarn]: https://yarnpkg.com/en/docs/install 'Never go full Facebook though'
 [tetris]: https://en.wikipedia.org/wiki/Tetris "You've played Tetris, right?"
+
+## Assumptions (Added by Akshatha Ballal)
+
+Two blocks are connected if they share a side i.e. the block above, below, to the left and to the right of a given block. Blocks that only share a corner have not been considered as connected.

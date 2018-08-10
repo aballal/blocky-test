@@ -6,6 +6,10 @@ class Block {
     this.y = y;
     this.colour = COLOURS[Math.floor(Math.random() * COLOURS.length)];
   }
+
+  getColour() {
+    return this.colour;
+  }
 }
 
 export default Block;
