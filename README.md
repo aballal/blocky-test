@@ -34,6 +34,16 @@ After clicking one of the bottom right blue boxes, it should look like this:
 [yarn]: https://yarnpkg.com/en/docs/install 'Never go full Facebook though'
 [tetris]: https://en.wikipedia.org/wiki/Tetris "You've played Tetris, right?"
 
-## Assumptions (Added by Akshatha Ballal)
+### Assumptions & Notes (Added by Akshatha Ballal)
 
-Two blocks are connected if they share a side i.e. the block above, below, to the left and to the right of a given block. Blocks that only share a corner have not been considered as connected.
+#### Assumptions
+
+Two blocks are connected if they share a side i.e. the block above, the block below, the block to the left or the block to the right of a given block. Blocks that only share a corner are not connected blocks.
+
+#### Notes
+
+Reduced the default grid from 10x10 to 5x5 for ease of testing. Besides, the example in README is also 5x5. 
+ 
+Jest is acting weird. It silently hangs for a failed test which severly disrupted my ability to do strict TDD. Hence parts of the code have been developed through manual TDD using console.logs and finally writing the automated test. (Possibly related to https://github.com/facebook/jest/issues/6157).
+
+Ideally, attributes of a class should only be accesssed via getter and setter methods and not manipulated directly outside a class. However I don't see a straightforward way of making properties private and forcing accessing them only via getter and setter methods. Hence, I haven't changed the existing code that maniuplates colour of Block directly from BlockGrid. The extension to this work would be to see how acess restrictions can be achieved. 
