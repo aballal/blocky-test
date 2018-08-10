@@ -17,11 +17,24 @@ class BlockGrid {
   }
 
   getBlock(x, y) {
-    return this.grid[x][y];
+    if (x < this.width && y < this.height) {
+      return this.grid[x][y];
+    }
   }
 
   getColumn(x, y) {
     return this.grid[x];
+  }
+
+  getSameColouredNeighbours(block) {
+    console.log(block);
+    if (block) {
+      const above = block.y >= this.height - 1 ? undefined : this.getBlock(block.x, block.y + 1); 
+      console.log('Above ', above);
+
+      const below = block.y > 0 ? this.getBlock(block.x, block.y - 1) : undefined
+      console.log('Below', below)
+    }
   }
 
   render(el = document.getElementById('gridEl')) {

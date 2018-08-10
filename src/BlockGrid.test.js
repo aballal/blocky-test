@@ -62,7 +62,8 @@ describe('BlockGrid', () => {
     global.Math = mockMath;
 
     const blockGrid = new BlockGrid(5, 5); 
-    console.log(blockGrid.grid);
+    const block = blockGrid.getBlock(3,1);
+    blockGrid.getSameColouredNeighbours(block);
     
     jest.clearAllMocks();
   });
