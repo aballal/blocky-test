@@ -26,24 +26,24 @@ class BlockGrid {
     return this.grid[x];
   }
 
-  getSameColouredNeighbours(block, sameColouredNeighbours = []) {
+  getSameColouredNeighbours(block, sameColouredNeighbours = [block]) {
     console.log(block);
 
     if (block) {
       const above = block.y >= this.height - 1 ? undefined : this.getBlock(block.x, block.y + 1); 
-      console.log('Above ', above);
+      // console.log('Above ', above);
 
       const below = block.y > 0 ? this.getBlock(block.x, block.y - 1) : undefined;
-      console.log('Below', below);
+      // console.log('Below', below);
 
       const left = block.x > 0 ? this.getBlock(block.x - 1, block.y) : undefined;
-      console.log('Left', left);
+      // console.log('Left', left);
 
       const right = block.x >= this.width - 1 ? undefined : this.getBlock(block.x + 1, block.y); 
-      console.log('Right', right);
+      // console.log('Right', right);
 
       [above, below, left, right].forEach(neighbour => {
-        if (block.colour === neighbour.colour) {
+        if (neighbour && block.colour === neighbour.colour) {
           sameColouredNeighbours.push(neighbour);
         }
       });
@@ -73,8 +73,31 @@ class BlockGrid {
     }
   }
 
-  blockClicked(e, block) {
-    console.log(e, block);
+  updateColumns() {
+    for(let x = 0; x < this.width; x++) {
+      const column = this.getColumn(x);
+      const columnColours = column.map(block => block.getColour());
+
+      const nonGreys = columnColours.filter(colour => colour !== 'grey');
+      const greys = columnColours.filter(colour => colour === 'grey');
+      const newColumnColours =  nonGreys.concat(greys);
+      console.log(newColumnColours);
+
+      for(let y = 0; y < this.height; y++) {
+        const block = this.getBlock(x,y);
+        block.colour = newColumnColours[y];
+        document.getElementById(`block_${block.x}x${block.y}`).style.background = newColumnColours[y];
+      }
+    }
+  }
+
+  blockClicked(e, clickedBlock) {
+    console.log(e, clickedBlock);
+    const sameColouredNeighbours = this.getSameColouredNeighbours(clickedBlock);
+    sameColouredNeighbours.forEach(neighbour => {
+      neighbour.colour = 'grey';
+    });
+    this.updateColumns();
   }
 }
 

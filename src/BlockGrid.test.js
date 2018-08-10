@@ -65,7 +65,8 @@ describe('BlockGrid', () => {
     const block = blockGrid.getBlock(3,1);
     const sameColouredNeighbours = blockGrid.getSameColouredNeighbours(block);
 
-    expect(sameColouredNeighbours).toEqual([{ x: 2, y: 1, colour: 'blue' }, { x: 4, y: 1, colour: 'blue' } ]);
+    console.log(sameColouredNeighbours);
+    expect(sameColouredNeighbours).toEqual([{ x: 3, y: 1, colour: 'blue' }, { x: 2, y: 1, colour: 'blue' }, { x: 4, y: 1, colour: 'blue' } ]);
 
     jest.clearAllMocks();
   });
