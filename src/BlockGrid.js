@@ -45,6 +45,21 @@ class BlockGrid {
     return sameColouredNeighbours;
   }
 
+  getAllConnectedSameColouredBlocks(block) {
+    const sameColouredNeighbours = this.getSameColouredNeighbours(block);
+
+    for(let i = 0; i < sameColouredNeighbours.length; i++) {
+      const neighbour = sameColouredNeighbours[i];
+      const moreSameColouredNeighbours = this.getSameColouredNeighbours(neighbour);
+      moreSameColouredNeighbours.forEach(neighboursNeighbour => {
+        if (find(sameColouredNeighbours, neighboursNeighbour) === undefined) {
+          sameColouredNeighbours.push(neighboursNeighbour);
+        }
+      });
+    }
+
+    return sameColouredNeighbours;
+  }
   render(el = document.getElementById('gridEl')) {
     for (let x = 0; x < this.width; x++) {
       const id = 'col_' + x;
@@ -86,21 +101,9 @@ class BlockGrid {
 
   blockClicked(e, clickedBlock) {
     console.log(e, clickedBlock);
-    const sameColouredNeighbours = this.getSameColouredNeighbours(clickedBlock);
-
-    for(let i = 0; i < sameColouredNeighbours.length; i++) {
-      console.log(JSON.stringify(sameColouredNeighbours));
-      const neighbour = sameColouredNeighbours[i];
-      const moreSameColouredNeighbours = this.getSameColouredNeighbours(neighbour);
-      moreSameColouredNeighbours.forEach(neighboursNeighbour => {
-        if (find(sameColouredNeighbours, neighboursNeighbour) === undefined) {
-          sameColouredNeighbours.push(neighboursNeighbour);
-        }
-      });
-    }
-
-    [clickedBlock].concat(sameColouredNeighbours).forEach(neighbour => {
-      neighbour.colour = 'grey';
+    const allConnectedSameColouredBlocks = this.getAllConnectedSameColouredBlocks(clickedBlock);
+    allConnectedSameColouredBlocks.forEach(block => {
+      block.colour = 'grey';
     });
 
     this.updateColumns();

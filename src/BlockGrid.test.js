@@ -98,5 +98,20 @@ describe('BlockGrid', () => {
         expect(sameColouredNeighbours).toEqual([{ x: 4, y: 1, colour: 'blue' }]);
       });
     });
+
+    describe('getAllConnectedSameColouredBlocks', () => {
+      it('finds same coloured neighbours and their neighbours and so on', () => {
+        const block = blockGrid.getBlock(2,2);
+        const allConnectedSameColouredBlocks = blockGrid.getAllConnectedSameColouredBlocks(block);
+        expect(allConnectedSameColouredBlocks).toEqual([
+          { x: 2, y: 1, colour: 'blue' },
+          { x: 2, y: 2, colour: 'blue' },
+          { x: 3, y: 1, colour: 'blue' },
+          { x: 4, y: 1, colour: 'blue' },
+          { x: 4, y: 2, colour: 'blue' },
+          { x: 4, y: 0, colour: 'blue' }, 
+        ]);
+      });
+    });
   });
 });
